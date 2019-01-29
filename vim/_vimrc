@@ -1,0 +1,227 @@
+set nocompatible " not compatible with vi
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => ENVIRONMENT SETTINGS
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set viminfo+='1000,nc:\\Program\ Files\ (x86)\\Vim\\vimfiles\\viminfo
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Pathogen
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+execute pathogen#infect()
+
+filetype plugin indent on
+
+" Setting up omni completion
+set omnifunc=syntaxcomplete#Complete
+
+set fileformat=unix " set file format to unix
+set fileformats=unix,dos " set file format to unix
+set autoread " detect when a file is changed
+set nobackup " no backup files
+set nowritebackup " only in case you don't want a back up file while editing
+set noswapfile " no swap files
+set noundofile " no undo file
+
+" make backspace behave in a sane manner
+set backspace=indent,eol,start
+
+" set a map leader for more key combos
+let mapleader = ','
+
+" Tab control
+set expandtab " Replace tabs for spaces
+set modeline " Needed for python files...
+set tabstop=2 " the visible width of tabs
+set softtabstop=2 " edit as if the tabs are 2 characters wide
+set shiftwidth=2 " number of spaces to use for indent and unindent
+set shiftround " round indent to a multiple of 'shiftwidth'
+set smarttab " tab respects 'tabstop', 'shiftwidth', and 'softtabstop'
+
+set clipboard=unnamed
+
+" faster redrawing
+set ttyfast
+
+" code folding settings
+set foldmethod=indent " fold based on indent
+set foldnestmax=10 " deepest fold is 10 levels
+set nofoldenable " don't fold by default
+set foldlevel=1
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Utilities
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Use CTRL-S for saving, also in Insert mode
+noremap <C-S> :update<CR>
+vnoremap <C-S> <C-C>:update<CR>
+inoremap <C-S> <C-O>:update<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Language Specific Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""" Python
+au FileType python setl shiftwidth=2 tabstop=2
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => User Interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Searching
+set ignorecase " case insensitive searching
+set smartcase " case-sensitive if expresson contains a capital letter
+set hlsearch
+set incsearch " set incremental search, like modern browsers
+set nolazyredraw " don't redraw while executing macros
+
+set magic " Set magic on, for regex
+
+set showmatch " show matching braces
+set mat=2 " how many tenths of a second to blink
+
+" switch syntax highlighting on
+syntax on
+
+set encoding=utf8
+let base16colorspace=256  " Access colors present in 256 colorspace"
+set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors"
+set background=dark
+colorscheme base16-default 
+set relativenumber
+
+set autoindent " automatically set indent of new line
+set smartindent
+
+set laststatus=2 " show the satus line all the time
+
+set colorcolumn=100 " Shows line for the maximum length of a line
+
+if has('gui_running')
+  set guifont=Consolas:h11
+endif
+
+set guioptions-=m  "remove menu bar
+set guioptions-=T  "remove toolbar
+set guioptions-=r  "remove right-hand scroll bar
+set guioptions-=L  "remove left-hand scroll bar
+autocmd VimEnter * call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0) " Start in fullscreen mode
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" moving up and down work as you would expect
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+
+" helpers for dealing with other people's code
+nmap \t :set ts=2 sts=2 sw=2 noet<cr>
+nmap \s :set ts=2 sts=2 sw=2 et<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+map <C-h> :call WinMove('h')<cr>
+map <C-j> :call WinMove('j')<cr>
+map <C-k> :call WinMove('k')<cr>
+map <C-l> :call WinMove('l')<cr>
+
+" Window movement shortcuts
+" move to the window in the direction shown, or create a new window
+function! WinMove(key)
+    let t:curwin = winnr()
+    exec "wincmd ".a:key
+    if (t:curwin == winnr())
+        if (match(a:key,'[jk]'))
+            wincmd v
+        else
+            wincmd s
+        endif
+        exec "wincmd ".a:key
+    endif
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Tabular mappings
+nmap <Leader>a= :Tab /=<CR>
+vmap <Leader>a= :Tab /=<CR>
+nmap <Leader>a: :Tab /:\zs<CR>
+vmap <Leader>a: :Tab /:\zs<CR>
+nmap <Leader>af :Tab /from<CR>
+vmap <Leader>af :Tab /from<CR>
+
+" Handlebars abbreviations
+let g:mustache_abbreviations = 1
+
+" close NERDTree after a file is opened
+let g:NERDTreeQuitOnOpen=0
+" show hidden files in NERDTree
+let NERDTreeShowHidden=1
+" Toggle NERDTree
+nmap <silent> <leader>k :NERDTreeToggle<cr>
+" expand to the path of the file in the current buffer
+nmap <silent> <leader>y :NERDTreeFind<cr>
+
+" map fuzzyfinder (CtrlP) plugin
+" nmap <silent> <leader>t :CtrlP<cr>
+nmap <silent> <leader>r :CtrlPBuffer<cr>
+let g:ctrlp_map='<leader>t'
+let g:ctrlp_dotfiles=1
+let g:ctrlp_working_path_mode = 'ra'
+nnoremap <leader>. :CtrlPTag<cr>
+
+" CtrlP ignore patterns
+let g:ctrlp_custom_ignore = {
+            \ 'dir': '\.git$\|node_modules$\|\.hg$\|\.svn$',
+            \ 'file': '\.exe$\|\.so$'
+            \ }
+
+" search the nearest ancestor that contains .git, .hg, .svn
+let g:ctrlp_working_path_mode = 2
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+" Syntastic Config
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers=["eslint"]
+let g:syntastic_javascript_eslint_exec="eslint_d"
+
+" Fullscreen key mapping
+
+map <F11> <ESC>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""
+" Prettier Config
+""""""""""""""""""""""""""""""""""""""""""""""
+nmap <Leader>py <Plug>(Prettier)
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.ts Prettier
+
+
