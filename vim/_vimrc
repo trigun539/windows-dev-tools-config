@@ -224,4 +224,7 @@ nmap <Leader>py <Plug>(Prettier)
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.ts Prettier
 
-
+""""""""""""""""""""""""""""""""""""""""""""""
+" File type syntax
+""""""""""""""""""""""""""""""""""""""""""""""
+au BufRead,BufNewFile \.*rc set filetype=json
