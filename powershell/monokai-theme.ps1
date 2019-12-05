@@ -4,7 +4,6 @@
 ##############################################################################################
 
 Push-Location
-Set-Location HKCU:\Console
 Set-Location '.\Windows PowerShell'
 
 Write-Host -nonewline -ForegroundColor Cyan        "--> [posh-monokai] "

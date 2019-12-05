@@ -4,6 +4,7 @@ set nocompatible " not compatible with vi
 " => ENVIRONMENT SETTINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set viminfo+='1000,nc:\\Program\ Files\ (x86)\\Vim\\vimfiles\\viminfo
+set shell=powershell
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Pathogen
@@ -184,7 +185,7 @@ nnoremap <leader>. :CtrlPTag<cr>
 
 " CtrlP ignore patterns
 let g:ctrlp_custom_ignore = {
-            \ 'dir': '\.git$\|node_modules$\|\.hg$\|\.svn$',
+            \ 'dir': '\.git$\|node_modules$\|\.hg$\|\.tmp$\|\.svn$',
             \ 'file': '\.exe$\|\.so$'
             \ }
 
@@ -212,6 +213,10 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers=["eslint"]
 let g:syntastic_javascript_eslint_exec="eslint_d"
+let g:syntastic_mode_map = {
+    \ "mode": "active",
+    \ "passive_filetypes": ["go", "java"] }
+
 
 " Fullscreen key mapping
 
